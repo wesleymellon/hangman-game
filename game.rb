@@ -1,7 +1,7 @@
 # require '5desk.txt'
 
 class Game
-  attr_accessor :secret_word, :guesses_remaining, :secret_word_display, :guessed_correct_letters, :guessed_incorrect_letters
+  attr_accessor :secret_word, :guesses_remaining, :secret_word_display, :guessed_correct_letters, :guessed_incorrect_letters, :current_letter_guess
 
   def initialize
     @dictionary = File.read "5desk.txt"
@@ -42,8 +42,10 @@ class Game
 
   def get_user_guess
     puts "What letter would you like to choose?"
-    user_guess = gets.chomp
-    unless valid_guess?(user_guess)
+    temp_guess = gets.chomp
+    if valid_guess?(temp_guess)
+      @current_letter_guess = temp_guess
+    else
       puts "Please enter a valid letter"
       get_user_guess
     end
@@ -57,4 +59,5 @@ end
 
 game1 = Game.new
 
-# puts game1.get_user_guess
+game1.get_user_guess
+puts game1.current_letter_guess
