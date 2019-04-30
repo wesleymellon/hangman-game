@@ -16,7 +16,7 @@ class Game
   end
   
   def set_secret_word
-    @secret_word = @dictionary.sample.downcase.split
+    @secret_word = @dictionary.sample.downcase.split("")
     while @secret_word.length < 5 || @secret_word.length > 12
       @secret_word = @dictionary.sample.downcase.split
     end
@@ -27,7 +27,6 @@ class Game
     @secret_word.length.times do
       @hanged_secret_word.push("_")
     end
-    @hanged_secret_word = @hanged_secret_word.join(" ")
   end
 
   def user_intro
@@ -37,8 +36,9 @@ class Game
   def display_user_feedback
     puts "Number of Guesses Remaining: #{@guesses_remaining}"
     puts "Correct Letters Guessed: #{@guessed_correct_letters.join(" ")}"
-    puts "Incorrect Letters Guessed: #{@guessed_incorrect_letters.join(" ")}"
-    puts "\n#{@hanged_secret_word}\n"
+    puts "Incorrect Letters Guessed: #{@guessed_incorrect_letters.join(" ")}\n"
+    puts display_hanged_secret_word
+    puts
   end
 
   def get_user_guess
@@ -79,14 +79,16 @@ class Game
   end
 
   def display_hanged_secret_word
-    puts "HERES WHERE WE TURN AN ARRAY INTO A STRING"
+    @hanged_secret_word.join(" ")
   end
 
   def game_over?
     if game_loss?
-      puts "GAME WAS LOST"
+      puts "Game lost!"
+      puts "The secret word was #{@secret_word.join}"
     elsif game_won?
-      puts "GAME WON"
+      puts "Game won!"
+      puts "You got the right word - #{@secret_word.join}"
     end
 
     game_loss? || game_won?
@@ -102,7 +104,6 @@ class Game
 
   def play_game
     user_intro
-    puts @secret_word
     until game_over?
       get_user_guess
       process_guess
